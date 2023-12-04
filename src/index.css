@@ -1,0 +1,17 @@
+
+
+*{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+.dropdown-toggle::after {
+    display: none;
+  }
+
+  /* @media only screen and (max-width: 600px){
+    .sidebar{
+        display: hide;
+    }
+  } */
