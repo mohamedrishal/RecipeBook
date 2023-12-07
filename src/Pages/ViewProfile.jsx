@@ -9,8 +9,15 @@ import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import AddPost from "../Components/AddPost";
 import { userAllPostsAPI } from "../Services/allAPI";
+import { useContext } from "react";
+import { addPostResponseContext, deletePostResponseContext, editPostResponseContext } from "../Contexts/ContextShare";
 
 function ViewProfile() {
+   
+  const {addPostResponse,setAddPostResponse} = useContext(addPostResponseContext)
+  const {deleteResponse,setDeleteResponse} = useContext(deletePostResponseContext)
+  const {editResponse,setEditResponse} = useContext(editPostResponseContext)
+  
 
 
   const [userDetails,setUserDetails]= useState("")
@@ -51,7 +58,7 @@ function ViewProfile() {
 
   useEffect(()=>{
     getUserAllPosts()
-  },[])
+  },[addPostResponse,deleteResponse,editResponse])
 
 
   return (

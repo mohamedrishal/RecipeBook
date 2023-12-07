@@ -2,11 +2,13 @@ import React, { useContext, useEffect, useState } from 'react'
 import AddPost from '../Components/AddPost'
 import ViewPost from '../Components/ViewPost'
 import { allPostsAPI } from '../Services/allAPI'
-import { addPostResponseContext } from '../Contexts/ContextShare'
+import { addPostResponseContext, deletePostResponseContext, editPostResponseContext } from '../Contexts/ContextShare'
 
 function Posts() {
 
   const {addPostResponse} = useContext(addPostResponseContext)
+  const {deleteResponse,setDeleteResponse} = useContext(deletePostResponseContext)
+  const {editResponse,setEditResponse} = useContext(editPostResponseContext)
 
   const [allPosts,setAllPosts] = useState([])
 
@@ -29,7 +31,7 @@ function Posts() {
 
   useEffect(()=>{
     getAllPosts()
-  },[addPostResponse])
+  },[addPostResponse,deleteResponse,editResponse])
 
  
   return (

@@ -8,6 +8,7 @@ import Posts from './Posts'
 function Home() {
 
   const [userDetails,setUserDetails]= useState("")
+ 
 
   useEffect(()=>{
     if(sessionStorage.getItem('existingUser')){

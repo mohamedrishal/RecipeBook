@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { Avatar } from "@mui/material";
 import avatar from "../Assets/user.jpg";
 import { useState } from "react";
@@ -7,13 +7,17 @@ import Collapse from "react-bootstrap/Collapse";
 import Dropdown from "react-bootstrap/Dropdown";
 import EditPost from "./EditPost";
 import { BASE_URL } from "../Services/baseURL";
-import { whoPostAPI } from "../Services/allAPI";
+import { deletePostAPI, whoPostAPI } from "../Services/allAPI";
+import { addPostResponseContext, deletePostResponseContext } from "../Contexts/ContextShare";
 
 
 function ViewPost({iseditAndDeleteBtn,post}) {
   const [open, setOpen] = useState(false);
 
   // console.log(post);
+
+  const {deleteResponse,setDeleteResponse} = useContext(deletePostResponseContext)
+  const {addPostResponse,setAddPostResponse} = useContext(addPostResponseContext)
 
   const [whoPost,setWhoPost] = useState(null)
 
@@ -29,11 +33,30 @@ function ViewPost({iseditAndDeleteBtn,post}) {
     }
   }
 
-  console.log(whoPost);
+  const handleDelete = async (id)=>{
+
+    const token = sessionStorage.getItem('token')
+    const reqHeader = {
+      "Content-Type": "application/json",
+      "Authorization" : `Bearer ${token}`
+    }
+    const result =  await deletePostAPI(id,reqHeader)
+    if(result.status===200){
+      // page reloaded
+      alert('delete')
+      setDeleteResponse(result.data)
+    }else{
+      alert(result.response.data)
+
+    }
+
+  }
+
+
 
   useEffect(()=>{
     getWhoUser()
-  },[])
+  },[addPostResponse])
 
   return (
     <div
@@ -78,9 +101,10 @@ function ViewPost({iseditAndDeleteBtn,post}) {
                       style={{ fontSize: "12px" }}
                       className="p-2"
                     >
-                      <EditPost/>
+                      <EditPost post={post}/>
                     </Dropdown.Item>
                     <Dropdown.Item
+                      onClick={()=>handleDelete(post._id)}
                       href="#/action-3"
                       style={{ fontSize: "12px" }}
                       className="p-2"

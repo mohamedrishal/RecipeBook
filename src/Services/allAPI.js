@@ -27,7 +27,17 @@ export const userAllPostsAPI = async (reqHeader)=>{
     return await commonAPI("GET",`${BASE_URL}/user/all-posts`,"",reqHeader)
 }
 
-// getUserAllPosts
+// getWhoPosts
 export const whoPostAPI = async (userid)=>{
     return await commonAPI("GET",`${BASE_URL}/user/${userid}`,"","")
+}
+
+// update posts
+export const editPostAPI = async (postId,reqBody,reqHeader)=>{
+    return await commonAPI("PUT",`${BASE_URL}/posts/edit/${postId}`,reqBody,reqHeader)
+}
+
+// delete posts
+export const deletePostAPI = async (postId,reqHeader)=>{
+    return await commonAPI("DELETE",`${BASE_URL}/posts/delete/${postId}`,{},reqHeader)
 }
