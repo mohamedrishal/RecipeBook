@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
@@ -6,9 +6,35 @@ import avatar from "../Assets/user.jpg";
 import Avatar from "@mui/material/Avatar";
 import Form from "react-bootstrap/Form";
 import Dropdown from "react-bootstrap/Dropdown";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { tokenAuthorisationContext } from "../Contexts/TokenAuth";
+import { BASE_URL } from "../Services/baseURL";
+import { editProfileResponseContext } from "../Contexts/ContextShare";
 
-function Header({ userDetails }) {
+function Header() {
+
+  const [userDetails,serUserDetails] = useState({})
+  const {editProfileResponse, setEditProfileResponse} = useContext(editProfileResponseContext)
+  
+
+  useEffect(() => {
+    serUserDetails(JSON.parse(sessionStorage.getItem("existingUser")));
+  },[editProfileResponse]);
+
+
+
+  const navigate = useNavigate()
+  const {isAuthorized , setIsAuthorized} = useContext(tokenAuthorisationContext)
+
+  const handleLogout = ()=>{
+    // remove all exisiting user details from browser
+    sessionStorage.removeItem("existingUser")
+    sessionStorage.removeItem("token")
+    setIsAuthorized(false)
+    // navigate to landing page
+    navigate('/')
+  }
+
   return (
     <div className="fixed-top">
       {" "}
@@ -81,7 +107,7 @@ function Header({ userDetails }) {
                       <Avatar
                         alt="Remy Sharp"
                         className="img-fluid"
-                        src={avatar}
+                        src={userDetails?.profile !== "" ? `${BASE_URL}/uploads/${userDetails.profile}` : avatar} 
                         sx={{ width: 29, height: 29 }}
                       />
                       <div className="fw-bold" style={{ fontSize: "9px" }}>
@@ -98,7 +124,7 @@ function Header({ userDetails }) {
                           <Avatar
                             alt="Remy Sharp"
                             className="img-fluid"
-                            src={avatar}
+                            src={userDetails?.profile !== "" ? `${BASE_URL}/uploads/${userDetails.profile}` : avatar} 
                             sx={{ width: 34, height: 34 }}
                           />
                           <div className="ms-3 d-flex flex-column">
@@ -153,14 +179,13 @@ function Header({ userDetails }) {
                       Post & Activity
                     </Dropdown.Item>
                     <Dropdown.Item
-                      href="/"
                       style={{ fontSize: "12px" }}
                       className="p-2"
                     >
-                      <Link to={"/"} className="text-dark text-decoration-none">
+                      <button onClick={handleLogout} className="text-start bg-transparent h-100 text-dark w-100 border-0">
                         {" "}
                         Sign Out
-                      </Link>
+                      </button>
                     </Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>

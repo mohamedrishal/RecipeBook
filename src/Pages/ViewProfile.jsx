@@ -4,69 +4,153 @@ import Header from "../Components/Header";
 import avatar from "../Assets/user.jpg";
 import Avatar from "@mui/material/Avatar";
 import ViewPost from "../Components/ViewPost";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import AddPost from "../Components/AddPost";
-import { userAllPostsAPI } from "../Services/allAPI";
+import { editUserProfileAPI, userAllPostsAPI } from "../Services/allAPI";
 import { useContext } from "react";
-import { addPostResponseContext, deletePostResponseContext, editPostResponseContext } from "../Contexts/ContextShare";
+import {
+  addPostResponseContext,
+  deletePostResponseContext,
+  editPostResponseContext,
+  editProfileResponseContext,
+} from "../Contexts/ContextShare";
+import { BASE_URL } from "../Services/baseURL";
 
 function ViewProfile() {
-   
-  const {addPostResponse,setAddPostResponse} = useContext(addPostResponseContext)
-  const {deleteResponse,setDeleteResponse} = useContext(deletePostResponseContext)
-  const {editResponse,setEditResponse} = useContext(editPostResponseContext)
-  
+  const { addPostResponse, setAddPostResponse } = useContext(
+    addPostResponseContext
+  );
+  const { deleteResponse, setDeleteResponse } = useContext(
+    deletePostResponseContext
+  );
+  const { editResponse, setEditResponse } = useContext(editPostResponseContext);
 
-
-  const [userDetails,setUserDetails]= useState("")
-
-  useEffect(()=>{
-    if(sessionStorage.getItem('existingUser')){
-      setUserDetails(JSON.parse(sessionStorage.getItem("existingUser")))
-    }
-  },[])
-
+  const {editProfileResponse, setEditProfileResponse} = useContext(editProfileResponseContext)
 
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const iseditAndDeleteBtn = true
+  const [userDetails, setUserDetails] = useState({
+    username: "",
+    email: "",
+    password: "",
+    profile: "",
+  });
 
-  
-  const [userAllPosts,setUserAllPosts] = useState([])
+  const [exisitingImg, setExisitingImg] = useState("");
 
-  const getUserAllPosts = async()=>{
-    if(sessionStorage.getItem("token")){
-      const token = sessionStorage.getItem("token")
+  const [preview, setPreview] = useState("");
+
+  useEffect(() => {
+    const user = JSON.parse(sessionStorage.getItem("existingUser"));
+    setUserDetails({
+      ...userDetails,
+      username: user.username,
+      email: user.email,
+      password: user.password,
+      profile: "",
+    });
+    setExisitingImg(user.profile);
+  },[show,editProfileResponse]);
+
+  useEffect(() => {
+    if (userDetails.profile) {
+      setPreview(URL.createObjectURL(userDetails.profile));
+    } else {
+      setPreview("");
+    }
+  }, [userDetails.profile]);
+
+  const iseditAndDeleteBtn = true;
+
+  const [userAllPosts, setUserAllPosts] = useState([]);
+
+  const getUserAllPosts = async () => {
+
+    if (sessionStorage.getItem("token")) {
+      const token = sessionStorage.getItem("token");
       const reqHeader = {
-        "Content-Type":"application/json",
-        "Authorization" : `Bearer ${token}`
-      }
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      };
 
-      const result = await userAllPostsAPI(reqHeader)
-      if(result.status===200){
-        setUserAllPosts(result.data)
-      }else{
+      const result = await userAllPostsAPI(reqHeader);
+      if (result.status === 200) {
+        setUserAllPosts(result.data);
+      } else {
         console.log(result);
       }
     }
-  }
+  };
 
-  useEffect(()=>{
-    getUserAllPosts()
-  },[addPostResponse,deleteResponse,editResponse])
+  useEffect(() => {
+    getUserAllPosts();
+  }, [addPostResponse, deleteResponse, editResponse]);
 
+  // update Profile
+  const handleUpdateProfile = async () => {
+
+    const { username, email, password, profile } = userDetails;
+
+    if (!username || !email || !password) {
+      alert("Please Fill the form completely");
+    } else {
+      const reqBody = new FormData();
+      reqBody.append("username", username);
+      reqBody.append("email", email);
+      reqBody.append("password", password);
+      preview
+        ? reqBody.append("profile", profile)
+        : reqBody.append("profile", exisitingImg);
+
+      const token = sessionStorage.getItem("token");
+
+      if (preview) {
+        const reqHeader = {
+          "Content-Type": "multipart/form-data",
+          "Authorization": `Bearer ${token}`,
+        };
+        // api call
+        const res = await editUserProfileAPI(reqBody,reqHeader);
+        if (res.status===200) {
+          handleClose();
+          sessionStorage.setItem("existingUser",JSON.stringify(res.data));
+          setEditProfileResponse(res.data)
+        } else {
+          handleClose();
+          console.log(res);
+          console.log(res.response?.data);
+          alert('hai')
+        }
+      } else {
+        const reqHeader = {
+          "Content-Type" : "application/json",
+          "Authorization" : `Bearer ${token}`,
+        };
+        // api call
+        const res = await editUserProfileAPI(reqBody,reqHeader);
+        if (res.status===200) {
+          handleClose();
+          sessionStorage.setItem("existingUser",JSON.stringify(res.data));
+          setEditProfileResponse(res.data)
+        } else {
+          handleClose();
+          console.log(res);
+          console.log(res.response?.data);
+        }
+      }
+    }
+  };
 
   return (
     <>
-      <Header userDetails={userDetails} />
+      <Header />
 
       <div className="d-flex flex-column align-items-center mt-4">
-
         {/* Profile  */}
         <div
           style={{
@@ -79,33 +163,33 @@ function ViewProfile() {
           <Avatar
             alt="Remy Sharp"
             className="img-fluid mt-1"
-            src={avatar}
+            src={ exisitingImg !== "" ? `${BASE_URL}/uploads/${exisitingImg}` :  avatar}
             sx={{ width: 80, height: 80 }}
           />
-          
+
+
           <div className="ms-3 d-flex flex-column w-100 text-center">
             <span style={{ fontSize: "22px" }} className="fw-bold">
               {userDetails?.username}
             </span>
-            <span style={{ fontSize: "15px" }} className="d-flex justify-content-center w-100">
+            <span
+              style={{ fontSize: "15px" }}
+              className="d-flex justify-content-center w-100"
+            >
               <p>{userDetails?.email}</p>
               <div
-            onClick={handleShow}
-            className="ms-auto btn btn-outline-dark border-0 rounded-circle"
-          >
-            <i class="fa-solid fa-user-pen"></i>
-          </div>
+                onClick={handleShow}
+                className="ms-auto btn btn-outline-dark border-0 rounded-circle"
+              >
+                <i class="fa-solid fa-user-pen"></i>
+              </div>
             </span>
           </div>
-         
         </div>
 
         {/* content */}
         <div className="d-flex flex-column flex-lg-row w-75 justify-content-between ">
-
-          <div
-            className="w-100"
-          >
+          <div className="w-100">
             <AddPost />
             <div
               className="border w-100 mt-2 d-flex justify-content-center align-items-center "
@@ -131,11 +215,19 @@ function ViewProfile() {
           </div>
 
           <div className="w-100 ms-2">
-            { userAllPosts.length>0 ? [...userAllPosts].reverse().map((post)=>(
-              <ViewPost post={post} iseditAndDeleteBtn={iseditAndDeleteBtn} />
-            )) : <h5>NO posts</h5>}
+            {userAllPosts.length > 0 ? (
+              [...userAllPosts]
+                .reverse()
+                .map((post) => (
+                  <ViewPost
+                    post={post}
+                    iseditAndDeleteBtn={iseditAndDeleteBtn}
+                  />
+                ))
+            ) : (
+              <h5>NO posts</h5>
+            )}
           </div>
-
         </div>
       </div>
 
@@ -148,49 +240,84 @@ function ViewProfile() {
         </Modal.Header>
         <Modal.Body className="d-flex flex-column justify-content-center align-items-center">
           <label>
-            <input style={{ display: "none" }} type="file" />
-            <Avatar
-              alt="Remy Sharp"
-              className="img-fluid mb-2"
-              src={avatar}
-              sx={{ width: 80, height: 80 }}
+            <input
+              style={{ display: "none" }}
+              type="file"
+              onChange={(e) =>
+                setUserDetails({ ...userDetails, profile: e.target.files[0] })
+              }
             />
+            {exisitingImg !== "" ? (
+              <Avatar
+                alt="Remy Sharp"
+                className="img-fluid mb-2"
+                src={preview ? preview : `${BASE_URL}/uploads/${exisitingImg}`}
+                sx={{ width: 80, height: 80 }}
+              />
+            ) : (
+              <Avatar
+                alt="Remy Sharp"
+                className="img-fluid mb-2"
+                src={preview ? preview : avatar}
+                sx={{ width: 80, height: 80 }}
+              />
+            )}
           </label>
 
           <Form.Group
             className="mb-3 w-100"
             controlId="exampleForm.ControlInput1"
           >
-            <Form.Control type="text" placeholder="Username" autoFocus />
+            <Form.Control
+              type="text"
+              placeholder="Username"
+              value={userDetails.username}
+              onChange={(e) =>
+                setUserDetails({ ...userDetails, username: e.target.value })
+              }
+              autoFocus
+            />
           </Form.Group>
 
           <Form.Group
             className="mb-3 w-100"
-            controlId="exampleForm.ControlInput1"
+            controlId="exampleForm.ControlInput2"
           >
-            <Form.Control type="email" placeholder="name@gmail.com" autoFocus />
+            <Form.Control
+              type="email"
+              placeholder="name@gmail.com"
+              value={userDetails.email}
+              onChange={(e) =>
+                setUserDetails({ ...userDetails, email: e.target.value })
+              }
+              autoFocus
+            />
           </Form.Group>
 
           <Form.Group
             className="mb-3 w-100"
-            controlId="exampleForm.ControlInput1"
+            controlId="exampleForm.ControlInput3"
           >
             <Form.Control
               type="password"
+              value={userDetails?.password}
+              onChange={(e) =>
+                setUserDetails({ ...userDetails, password: e.target.value })
+              }
               placeholder="New Password"
               autoFocus
             />
           </Form.Group>
         </Modal.Body>
         <Modal.Footer className="d-flex justify-content-center">
-          <div
+          <button
             style={{ fontSize: "12px" }}
             className="border btn btn-outline-dark rounded-5 px-4 ms-auto"
             variant="secondary"
-            onClick={handleClose}
+            onClick={handleUpdateProfile}
           >
             Confirm
-          </div>
+          </button>
         </Modal.Footer>
       </Modal>
     </>

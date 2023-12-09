@@ -9,6 +9,7 @@ import EditPost from "./EditPost";
 import { BASE_URL } from "../Services/baseURL";
 import { deletePostAPI, whoPostAPI } from "../Services/allAPI";
 import { addPostResponseContext, deletePostResponseContext } from "../Contexts/ContextShare";
+import Form from "react-bootstrap/Form";
 
 
 function ViewPost({iseditAndDeleteBtn,post}) {
@@ -17,7 +18,7 @@ function ViewPost({iseditAndDeleteBtn,post}) {
   // console.log(post);
 
   const {deleteResponse,setDeleteResponse} = useContext(deletePostResponseContext)
-  const {addPostResponse,setAddPostResponse} = useContext(addPostResponseContext)
+  // const {addPostResponse,setAddPostResponse} = useContext(addPostResponseContext)
 
   const [whoPost,setWhoPost] = useState(null)
 
@@ -52,11 +53,9 @@ function ViewPost({iseditAndDeleteBtn,post}) {
 
   }
 
-
-
   useEffect(()=>{
     getWhoUser()
-  },[addPostResponse])
+  })
 
   return (
     <div
@@ -69,7 +68,7 @@ function ViewPost({iseditAndDeleteBtn,post}) {
             <Avatar
               alt="Remy Sharp"
               className="img-fluid border"
-              src={avatar}
+              src={whoPost?.profile===""? avatar : `${BASE_URL}/uploads/${whoPost?.profile}`}
               sx={{ width: 34, height: 34 }}
             />
           </div>
@@ -164,9 +163,24 @@ function ViewPost({iseditAndDeleteBtn,post}) {
           
         </div>
         <Collapse in={open}>
-          <div id="example-collapse-text" style={{fontSize:"12px"}}>
-           {post.make}
+
+          <div id="example-collapse-text" style={{fontSize:"10px"}}>
+
+          <Form>
+            <Form.Group
+            >
+              <Form.Control
+                // className="border-0"
+                className="bg-transparent"
+                as="textarea"
+                value=   {post.make}
+                rows={10}
+                style={{ resize: "none" }}
+              />
+            </Form.Group>
+          </Form>
           </div>
+
         </Collapse>
       </div>
       <div className=" mt-2 rounded">

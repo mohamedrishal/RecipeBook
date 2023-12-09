@@ -9,9 +9,18 @@ import Tooltip from "react-bootstrap/Tooltip";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { addPostAPI } from "../Services/allAPI";
-import { addPostResponseContext } from "../Contexts/ContextShare";
+import { addPostResponseContext, editPostResponseContext } from "../Contexts/ContextShare";
+import { BASE_URL } from "../Services/baseURL";
 
 function AddPost() {
+
+  const [userDetails,serUserDetails] = useState({})
+  const {editProfileResponse, setEditProfileResponse} = useContext(editPostResponseContext)
+  
+
+  useEffect(() => {
+    serUserDetails(JSON.parse(sessionStorage.getItem("existingUser")));
+  },[editProfileResponse]);
 
   const {setAddPostResponse} = useContext(addPostResponseContext)
 
@@ -107,7 +116,7 @@ function AddPost() {
             <Avatar
               alt="Remy Sharp"
               className="img-fluid me-3"
-              src={avatar}
+              src={userDetails?.profile !== "" ? `${BASE_URL}/uploads/${userDetails.profile}` : avatar} 
               sx={{ width: 34, height: 34 }}
             />
           </div>

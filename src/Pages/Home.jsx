@@ -18,7 +18,7 @@ function Home() {
 
   return (
     <>
-    <Header userDetails={userDetails} />
+    <Header/>
    <div className='d-flex justify-content-between align-itmes-center'>
         <LeftSide userDetails={userDetails} className="sidebar" />    
         <Posts/>

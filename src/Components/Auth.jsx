@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Row, Col } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -10,8 +10,12 @@ import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { loginAPI } from "../Services/allAPI";
+import { tokenAuthorisationContext } from "../Contexts/TokenAuth";
 
 function Auth() {
+
+  const {isAuthorized , setIsAuthorized} = useContext(tokenAuthorisationContext)
+
 
   // toggle eye icon for password visible  and invisible 
   const [type, setType] = useState("password");
@@ -49,6 +53,7 @@ function Auth() {
           JSON.stringify(result.data.existingUser)
         );
         sessionStorage.setItem("token", result.data.token);
+        setIsAuthorized(true)
         setUserData({
           email: "",
           password: "",

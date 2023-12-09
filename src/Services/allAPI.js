@@ -41,3 +41,11 @@ export const editPostAPI = async (postId,reqBody,reqHeader)=>{
 export const deletePostAPI = async (postId,reqHeader)=>{
     return await commonAPI("DELETE",`${BASE_URL}/posts/delete/${postId}`,{},reqHeader)
 }
+
+
+
+
+// edit user
+export const editUserProfileAPI = async (reqBody,reqHeader)=>{
+    return await commonAPI("PUT",`${BASE_URL}/user/edit`,reqBody,reqHeader)
+}

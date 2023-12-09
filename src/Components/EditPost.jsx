@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import upload from "../Assets/glr8.jpg";
 import { useState,useEffect } from "react";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
