@@ -10,6 +10,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { tokenAuthorisationContext } from "../Contexts/TokenAuth";
 import { BASE_URL } from "../Services/baseURL";
 import { editProfileResponseContext } from "../Contexts/ContextShare";
+import { postSearchKeyContext } from "../Contexts/SearchKey";
 
 function Header() {
 
@@ -35,6 +36,8 @@ function Header() {
     navigate('/')
   }
 
+  const {searchKey,setSearchKey} =useContext(postSearchKeyContext)
+
   return (
     <div className="fixed-top">
       {" "}
@@ -59,9 +62,11 @@ function Header() {
                 {" "}
                 <Form className="me-5 container">
                   <Form.Control
+                    value={searchKey}
+                    onChange={e=>setSearchKey(e.target.value)}
                     style={{ width: "320px" }}
                     className="container rounded-5 border border-1"
-                    type="search"
+                    // type="search"
                     placeholder="Search"
                     aria-label="Search"
                     size="sm"

@@ -164,18 +164,17 @@ function ViewPost({iseditAndDeleteBtn,post}) {
         </div>
         <Collapse in={open}>
 
-          <div id="example-collapse-text" style={{fontSize:"10px"}}>
+          <div id="example-collapse-text" >
 
           <Form>
             <Form.Group
             >
               <Form.Control
-                // className="border-0"
-                className="bg-transparent"
+                className="bg-transparent border-0"
                 as="textarea"
                 value=   {post.make}
                 rows={10}
-                style={{ resize: "none" }}
+                style={{ resize: "none",fontSize:"14px" }}
               />
             </Form.Group>
           </Form>
@@ -183,12 +182,12 @@ function ViewPost({iseditAndDeleteBtn,post}) {
 
         </Collapse>
       </div>
-      <div className=" mt-2 rounded">
+      <div className=" mt-2 rounded d-flex justify-content-center align-items-center">
         <img
-          style={{ height: "250px", width: "100%" }}
+          style={{ height: "200px", width: "90%" }}
           className="img-fluid rounded-4 border border-2"
           src={post && `${BASE_URL}/uploads/${post.recipeImage}`}
-          alt=""
+          alt="Loading"
         />
       </div>
       <hr />

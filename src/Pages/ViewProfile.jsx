@@ -158,7 +158,7 @@ function ViewProfile() {
             width: "400px",
             backgroundColor: "#f2f2f2",
           }}
-          className="border w-75 d-flex align-items-center flex-column mt-5 px-4"
+          className="border w-75 d-flex align-items-center flex-column mt-5 px-4 position-relative"
         >
           <Avatar
             alt="Remy Sharp"
@@ -189,7 +189,7 @@ function ViewProfile() {
 
         {/* content */}
         <div className="d-flex flex-column flex-lg-row w-75 justify-content-between ">
-          <div className="w-100">
+          <div className="w-100 ">
             <AddPost />
             <div
               className="border w-100 mt-2 d-flex justify-content-center align-items-center "

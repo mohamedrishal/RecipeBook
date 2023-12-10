@@ -6,6 +6,7 @@ import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 import ContextShare from "./Contexts/ContextShare";
 import TokenAuth from "./Contexts/TokenAuth";
+import SearchKey from "./Contexts/SearchKey";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -13,9 +14,11 @@ root.render(
     {/* Router */}
    <ContextShare>
      <TokenAuth>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
+       <SearchKey>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+       </SearchKey>
      </TokenAuth>
    </ContextShare>
   </React.StrictMode>

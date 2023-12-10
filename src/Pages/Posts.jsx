@@ -3,12 +3,14 @@ import AddPost from '../Components/AddPost'
 import ViewPost from '../Components/ViewPost'
 import { allPostsAPI } from '../Services/allAPI'
 import { addPostResponseContext, deletePostResponseContext, editPostResponseContext } from '../Contexts/ContextShare'
+import { postSearchKeyContext } from '../Contexts/SearchKey'
 
 function Posts() {
 
   const {addPostResponse} = useContext(addPostResponseContext)
   const {deleteResponse,setDeleteResponse} = useContext(deletePostResponseContext)
   const {editResponse,setEditResponse} = useContext(editPostResponseContext)
+  const {searchKey,setSearchKey} = useContext(postSearchKeyContext)
 
   const [allPosts,setAllPosts] = useState([])
 
@@ -20,7 +22,7 @@ function Posts() {
         "Authorization" : `Bearer ${token}`
       }
 
-      const result = await allPostsAPI(reqHeader)
+      const result = await allPostsAPI(searchKey,reqHeader)
       if(result.status===200){
         setAllPosts(result.data)
       }else{
@@ -31,11 +33,11 @@ function Posts() {
 
   useEffect(()=>{
     getAllPosts()
-  },[addPostResponse,deleteResponse,editResponse])
+  },[addPostResponse,deleteResponse,editResponse,searchKey])
 
  
   return (
-    <div className='w-50 h-100 container mt-5'>
+    <div className='post col-6 h-100 container mt-5'>
         <p className='mt-4'>
           <AddPost/>
         </p>

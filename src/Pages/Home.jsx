@@ -19,12 +19,10 @@ function Home() {
   return (
     <>
     <Header/>
-   <div className='d-flex justify-content-between align-itmes-center'>
-        <LeftSide userDetails={userDetails} className="sidebar" />    
-        <Posts/>
-        <RightSide className="sidebar" />
-
-       
+   <div className='row '>
+        <LeftSide className="col-3" userDetails={userDetails}  />    
+        <Posts className="col-6 ms-5"/>
+        <RightSide className="col-3" />
    </div>
     </>
   )

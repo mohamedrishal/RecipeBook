@@ -1,0 +1,15 @@
+.sidebar {
+    display: block; /* or any other default display property */
+  }
+  
+  /* Media query for screens with a maximum width of 767 pixels (adjust as needed) */
+  @media (max-width: 767px) {
+    .sidebar {
+      display: none;
+    }
+    .post {
+        width: 95%;
+        /* margin-right: 15px; */
+
+    }
+  }

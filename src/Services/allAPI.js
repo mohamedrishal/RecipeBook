@@ -18,8 +18,8 @@ export const addPostAPI = async (reqBody,reqHeader)=>{
 }
 
 // getAllPosts
-export const allPostsAPI = async (reqHeader)=>{
-    return await commonAPI("GET",`${BASE_URL}/posts/all`,"",reqHeader)
+export const allPostsAPI = async (searchKey,reqHeader)=>{
+    return await commonAPI("GET",`${BASE_URL}/posts/all?search=${searchKey}`,"",reqHeader)
 }
 
 // getUserAllPosts

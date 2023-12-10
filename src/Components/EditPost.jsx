@@ -148,7 +148,7 @@ function EditPost({post}) {
             src={
               preview ? preview : `${BASE_URL}/uploads/${post.recipeImage}`
             }
-            alt=""
+            alt="Loading"
           />
      </div>
 
