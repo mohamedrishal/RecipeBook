@@ -1,1 +1,1 @@
-export const BASE_URL = "http://localhost:4000"
+export const BASE_URL = "https://recipebook-server-rb6c.onrender.com"
