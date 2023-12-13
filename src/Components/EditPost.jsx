@@ -7,6 +7,8 @@ import Tooltip from "react-bootstrap/Tooltip";
 import { editPostResponseContext } from "../Contexts/ContextShare";
 import { BASE_URL } from "../Services/baseURL";
 import { editPostAPI } from "../Services/allAPI";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function EditPost({post}) {
     const [show, setShow] = useState(false);
@@ -78,9 +80,10 @@ function EditPost({post}) {
             handleClose();
             // pass response to my projects
             setEditResponse(result.data);
+            toast.success('Updated Post..')
           } else {
-            console.log(result);
-            alert(result.response.data);
+            // console.log(result);
+            toast.error(result.response.data);
           }
         } else {
           const reqHeader = {
@@ -94,9 +97,11 @@ function EditPost({post}) {
             handleClose();
             // pass response to my projects
             setEditResponse(result.data);
+            toast.success('Updated Post..')
+
           } else {
             console.log(result);
-            alert(result.response.data);
+            toast.error(result.response.data);
           }
         }
       }
@@ -185,6 +190,7 @@ function EditPost({post}) {
         </div>
       </Modal.Footer>
     </Modal>
+    <ToastContainer position="top-center" autoClose={2000} />
   </>
   )
 }

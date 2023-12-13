@@ -9,20 +9,23 @@ import Tooltip from "react-bootstrap/Tooltip";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { addPostAPI } from "../Services/allAPI";
-import { addPostResponseContext, editPostResponseContext } from "../Contexts/ContextShare";
+import {
+  addPostResponseContext,
+  editPostResponseContext,
+} from "../Contexts/ContextShare";
 import { BASE_URL } from "../Services/baseURL";
 
 function AddPost() {
-
-  const [userDetails,serUserDetails] = useState({})
-  const {editProfileResponse, setEditProfileResponse} = useContext(editPostResponseContext)
-  
+  const [userDetails, serUserDetails] = useState({});
+  const { editProfileResponse, setEditProfileResponse } = useContext(
+    editPostResponseContext
+  );
 
   useEffect(() => {
     serUserDetails(JSON.parse(sessionStorage.getItem("existingUser")));
-  },[editProfileResponse]);
+  }, [editProfileResponse]);
 
-  const {setAddPostResponse} = useContext(addPostResponseContext)
+  const { addPostResponse,setAddPostResponse } = useContext(addPostResponseContext);
 
   const [show, setShow] = useState(false);
 
@@ -52,21 +55,21 @@ function AddPost() {
     if (postDetails.recipeImage) {
       setPreview(URL.createObjectURL(postDetails.recipeImage));
     }
-  }, [postDetails.recipeImage]);
+  }, [postDetails.recipeImage,addPostResponse]);
 
   // console.log(postDetails);
 
-   // token require 
+  // token require
 
-   const [token,setToken] = useState("")
+  const [token, setToken] = useState("");
 
-   useEffect(()=>{
-     if(sessionStorage.getItem("token")){
-       setToken(sessionStorage.getItem("token"))
-     }else{
-       setToken("")
-     }
-   },[])
+  useEffect(() => {
+    if (sessionStorage.getItem("token")) {
+      setToken(sessionStorage.getItem("token"));
+    } else {
+      setToken("");
+    }
+  }, []);
 
   // add Post
   const handleAddPost = async (e) => {
@@ -80,30 +83,28 @@ function AddPost() {
       reqBody.append("make", make);
       reqBody.append("recipeImage", recipeImage);
 
-      if(token){
+      console.log(reqBody);
+
+      if (token) {
         const reqHeader = {
           "Content-Type": "multipart/form-data",
-          "Authorization" : `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        };
         const result = await addPostAPI(reqBody, reqHeader);
         if (result.status === 200) {
           console.log(result.data);
-          handleClose()
-          toast.success('Posting....')
-          setAddPostResponse(result.data)
-        }else{
+          handleClose();
+          toast.success("Posting....");
+          setAddPostResponse(result.data);
+        } else {
           console.log(result);
           console.log(result.response.data);
-          toast.warning(result.response.data)
+          toast.warning(result.response.data);
         }
-      }else{
-        
+      } else {
       }
-      
     }
   };
-
- 
 
   return (
     <>
@@ -116,7 +117,11 @@ function AddPost() {
             <Avatar
               alt="Remy Sharp"
               className="img-fluid me-3"
-              src={userDetails?.profile !== "" ? `${BASE_URL}/uploads/${userDetails.profile}` : avatar} 
+              src={
+                userDetails?.profile !== ""
+                  ? `${BASE_URL}/uploads/${userDetails.profile}`
+                  : avatar
+              }
               sx={{ width: 34, height: 34 }}
             />
           </div>

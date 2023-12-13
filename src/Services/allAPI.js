@@ -49,3 +49,13 @@ export const deletePostAPI = async (postId,reqHeader)=>{
 export const editUserProfileAPI = async (reqBody,reqHeader)=>{
     return await commonAPI("PUT",`${BASE_URL}/user/edit`,reqBody,reqHeader)
 }
+
+// like post 
+export const postLikeAPI = async (postId,reqHeader)=>{
+    return await commonAPI("POST",`${BASE_URL}/posts/like/${postId}`,{},reqHeader)
+}
+
+// unlike post 
+export const postUnlikeAPI = async (postId,reqHeader)=>{
+    return await commonAPI("POST",`${BASE_URL}/posts/unlike/${postId}`,{},reqHeader)
+}

@@ -80,11 +80,11 @@ function Auth() {
         <Row className="container text-center px-5">
           <Col sm={12} md={6}>
             <div className="d-flex justify-content-center align-items-center flex-column mt-5 text-white">
-              <h1 className="fw-bolder text-dark">
-                Rec<span className="text-danger">ipe</span> bOOk
-              </h1>
-              <p className="text-dark fs-6 text-start ms-5">
-                👩‍🍳 Unleash your inner chef with our Recipe Book! 📚 Share your
+            <h1 className="fw-bolder text-dark" style={{fontFamily:"'Cinzel', serif"}}>
+              🧑‍🍳Rec<span className="text-danger">ipe</span>booK
+            </h1>
+              <p style={{fontFamily:"'Beau Rivage', cursive"}} className="text-dark fs-5 fw-bold text-start ms-5">
+                   Unleash your inner chef with our Recipe Book! 📚 Share your
                 favorite recipes, tweak them to perfection, and savor the joy of
                 cooking. 🍲✨ Categorize dishes, list ingredients effortlessly,
                 and let the community flavor your creations with ratings and

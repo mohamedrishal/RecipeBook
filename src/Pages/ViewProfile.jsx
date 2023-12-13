@@ -18,6 +18,9 @@ import {
 } from "../Contexts/ContextShare";
 import { BASE_URL } from "../Services/baseURL";
 
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 function ViewProfile() {
   const { addPostResponse, setAddPostResponse } = useContext(
     addPostResponseContext
@@ -120,11 +123,11 @@ function ViewProfile() {
           handleClose();
           sessionStorage.setItem("existingUser",JSON.stringify(res.data));
           setEditProfileResponse(res.data)
+          toast.success("Profile Updated...")
         } else {
           handleClose();
-          console.log(res);
-          console.log(res.response?.data);
-          alert('hai')
+          // console.log(res);
+          toast.error(res.response?.data);
         }
       } else {
         const reqHeader = {
@@ -137,10 +140,12 @@ function ViewProfile() {
           handleClose();
           sessionStorage.setItem("existingUser",JSON.stringify(res.data));
           setEditProfileResponse(res.data)
+          toast.success("Profile Updated...")
         } else {
           handleClose();
-          console.log(res);
-          console.log(res.response?.data);
+          // console.log(res);
+          toast.error(res.response?.data);
+
         }
       }
     }
@@ -199,9 +204,9 @@ function ViewProfile() {
                 className="website mt-4 "
                 style={{ width: "200px", fontSize: "15px" }}
               >
-                <h4 className="fw-bolder">
-                  Rec<span className="text-danger">ipe</span> bOOk
-                </h4>
+               <h5 className="fw-bolder text-dark" style={{fontFamily:"'Cinzel', serif"}}>
+              🧑‍🍳Rec<span className="text-danger">ipe</span>booK
+            </h5>
                 <h6 style={{ fontSize: "14px" }}>
                   Designed and built with all the love in the world by the
                   luminr team with the help of our contributors.
@@ -225,7 +230,7 @@ function ViewProfile() {
                   />
                 ))
             ) : (
-              <h5>NO posts</h5>
+             <div style={{height:"80vh"}} className="d-flex justify-content-center align-items-center"> <h5 className="text-muted">No Posts</h5></div>
             )}
           </div>
         </div>
@@ -279,7 +284,7 @@ function ViewProfile() {
             />
           </Form.Group>
 
-          <Form.Group
+          {/* <Form.Group
             className="mb-3 w-100"
             controlId="exampleForm.ControlInput2"
           >
@@ -307,7 +312,7 @@ function ViewProfile() {
               placeholder="New Password"
               autoFocus
             />
-          </Form.Group>
+          </Form.Group> */}
         </Modal.Body>
         <Modal.Footer className="d-flex justify-content-center">
           <button
@@ -320,6 +325,7 @@ function ViewProfile() {
           </button>
         </Modal.Footer>
       </Modal>
+      <ToastContainer position="top-center" autoClose={2000} />
     </>
   );
 }

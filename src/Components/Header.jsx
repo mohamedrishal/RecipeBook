@@ -43,13 +43,13 @@ function Header() {
       {" "}
       <Navbar
         expand="lg"
-        className="p-0 m-0 border-bottom shadow"
+        className="p-0 m-0 border-bottom border-muted"
         style={{ backgroundColor: "#f0f2f5" }}
       >
         <Container className="d-flex">
           <Navbar.Brand href="/home">
-            <h5 className="fw-bolder text-dark">
-              Rec<span className="text-danger">ipe</span> bOOk
+            <h5 className="fw-bold text-dark" style={{fontFamily:"'Cinzel', serif"}}>
+              🧑‍🍳Rec<span className="text-danger">ipe</span>booK
             </h5>
           </Navbar.Brand>
 
