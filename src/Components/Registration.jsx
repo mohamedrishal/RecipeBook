@@ -51,7 +51,7 @@ function Registration({ userData, setUserData }) {
 
   return (
     <>
-      <Button variant="success" className="fs-6" onClick={handleShow}>
+      <Button  variant="success" className="" onClick={handleShow}>
         Create new account
       </Button>
 

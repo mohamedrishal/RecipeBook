@@ -97,9 +97,9 @@ function Auth() {
             </div>
           </Col>
           <Col sm={12} md={6}>
-            <div className=" d-flex justify-content-center align-items-center">
+            <div className="container d-flex justify-content-center align-items-center">
               <div
-                style={{ width: "400px", height: "250px" }}
+                style={{ width: "400px", height: "270px" }}
                 className="bg-transparent rounded border shadow-lg p-4"
               >
                 <Form>
@@ -145,7 +145,7 @@ function Auth() {
                   </button>
                 </Form>
                 <hr />
-                <div >
+                <div className="container" >
                   <Registration userData={userData} setUserData={setUserData} />
                 </div>
               </div>
