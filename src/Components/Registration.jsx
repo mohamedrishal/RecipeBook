@@ -8,13 +8,11 @@ import { registerAPI } from "../Services/allAPI";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-function Registration({userData,setUserData}) {
+function Registration({ userData, setUserData }) {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
-
 
   // handleRegister function
   const handleRegister = async (e) => {
@@ -40,6 +38,16 @@ function Registration({userData,setUserData}) {
       }
     }
   };
+
+  // toggle eye icon for password visible  and invisible
+  const [type, setType] = useState("password");
+  const [icon, setIcon] = useState("fa-eye-slash");
+
+  const togglePasswordVisibility = () => {
+    setType(type === "password" ? "text" : "password");
+    setIcon(icon === "fa-eye" ? "fa-eye-slash" : "fa-eye");
+  };
+
 
   return (
     <>
@@ -80,19 +88,25 @@ function Registration({userData,setUserData}) {
                 }
               />
             </Form.Group>
-
-            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-              <Form.Label>Password</Form.Label>
+            <Form.Label>Password</Form.Label>
+            <div className="d-flex align-items-center">
+            
               <Form.Control
-                type="password"
+                size="md"
+                type={type}
                 placeholder="Password"
-                autoFocus
                 value={userData.password}
                 onChange={(e) =>
                   setUserData({ ...userData, password: e.target.value })
                 }
               />
-            </Form.Group>
+              <span
+                style={{ cursor: "pointer", marginLeft: "-30px" }}
+                onClick={togglePasswordVisibility}
+              >
+                <i className={`fa-solid ${icon}`}></i>
+              </span>
+            </div>
           </Form>
         </Modal.Body>
         <Modal.Footer className="d-flex justify-content-center">

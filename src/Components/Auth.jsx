@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import { Row, Col } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
 import bg from "../Assets/bg.jpg";
 import Registration from "../Components/Registration";
 import { useState } from "react";
@@ -13,11 +12,11 @@ import { loginAPI } from "../Services/allAPI";
 import { tokenAuthorisationContext } from "../Contexts/TokenAuth";
 
 function Auth() {
+  const { isAuthorized, setIsAuthorized } = useContext(
+    tokenAuthorisationContext
+  );
 
-  const {isAuthorized , setIsAuthorized} = useContext(tokenAuthorisationContext)
-
-
-  // toggle eye icon for password visible  and invisible 
+  // toggle eye icon for password visible  and invisible
   const [type, setType] = useState("password");
   const [icon, setIcon] = useState("fa-eye-slash");
 
@@ -25,7 +24,6 @@ function Auth() {
     setType(type === "password" ? "text" : "password");
     setIcon(icon === "fa-eye" ? "fa-eye-slash" : "fa-eye");
   };
-
 
   const navigate = useNavigate();
 
@@ -53,7 +51,7 @@ function Auth() {
           JSON.stringify(result.data.existingUser)
         );
         sessionStorage.setItem("token", result.data.token);
-        setIsAuthorized(true)
+        setIsAuthorized(true);
         setUserData({
           email: "",
           password: "",
@@ -80,11 +78,17 @@ function Auth() {
         <Row className="container text-center px-5">
           <Col sm={12} md={6}>
             <div className="d-flex justify-content-center align-items-center flex-column mt-5 text-white">
-            <h1 className="fw-bolder text-dark" style={{fontFamily:"'Cinzel', serif"}}>
-              🧑‍🍳Rec<span className="text-danger">ipe</span>booK
-            </h1>
-              <p style={{fontFamily:"'Beau Rivage', cursive"}} className="text-dark fs-5 fw-bold text-start ms-5">
-                   Unleash your inner chef with our Recipe Book! 📚 Share your
+              <h1
+                className="fw-bolder text-dark"
+                style={{ fontFamily: "'Cinzel', serif" }}
+              >
+                🧑‍🍳Rec<span className="text-danger">ipe</span>booK
+              </h1>
+              <p
+                style={{ fontFamily: "'Beau Rivage', cursive" }}
+                className="text-dark fs-5 fw-bold text-start ms-5"
+              >
+                Unleash your inner chef with our Recipe Book! 📚 Share your
                 favorite recipes, tweak them to perfection, and savor the joy of
                 cooking. 🍲✨ Categorize dishes, list ingredients effortlessly,
                 and let the community flavor your creations with ratings and
@@ -118,32 +122,30 @@ function Auth() {
                     className="mb-3"
                     controlId="exampleForm.ControlInput2"
                   >
-                   <div className="d-flex align-items-center">
+                    <div className="d-flex align-items-center">
                       <Form.Control
                         size="md"
-                        type= {type}
+                        type={type}
                         placeholder="Password"
                         value={userData.password}
                         onChange={(e) =>
                           setUserData({ ...userData, password: e.target.value })
                         }
                       />
-                     <span style={{ cursor: "pointer",marginLeft: "-30px" }} onClick={togglePasswordVisibility}>
-                        <i  className={`fa-solid ${icon}`}></i>
+                      <span
+                        style={{ cursor: "pointer", marginLeft: "-30px" }}
+                        onClick={togglePasswordVisibility}
+                      >
+                        <i className={`fa-solid ${icon}`}></i>
                       </span>
-                   </div>
+                    </div>
                   </Form.Group>
-                  <Button
-                    onClick={handleLogin}
-                    className="w-100 "
-                    variant="dark"
-                    size="sm"
-                  >
+                  <button onClick={handleLogin} className="w-100 btn btn-dark">
                     Log in
-                  </Button>
+                  </button>
                 </Form>
                 <hr />
-                <div className="my-3">
+                <div >
                   <Registration userData={userData} setUserData={setUserData} />
                 </div>
               </div>
